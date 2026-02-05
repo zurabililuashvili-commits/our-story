@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ჩვენი ისტორია ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #ffe4e9;
+            --card-bg: #ffffff;
+            --accent-color: #ff8da1;
+            --text-color: #4a4a4a;
+            --grid-color: rgba(255, 183, 197, 0.3);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 25px 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+            overflow: hidden;
+        }
+
+        .main-card {
+            background: var(--card-bg);
+            width: 90%;
+            max-width: 400px;
+            height: 650px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 141, 161, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: cardEntrance 0.8s ease-out;
+        }
+
+        @keyframes cardEntrance {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .card-header {
+            width: 100%;
+            height: 100px;
+            background: #ffb7c5;
+            position: relative;
+        }
+
+        .card-header::after {
+            content: "";
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: #ffb7c5;
+            clip-path: ellipse(50% 50% at 50% 0%);
+        }
+
+        .content-wrapper {
+            flex-grow: 1;
+            padding: 40px 25px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .main-gif {
+            width: 180px;
+            height: 180px;
+            border-radius: 20px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 { font-size: 1.6rem; color: var(--accent-color); margin: 10px 0; }
+        p { font-size: 1rem; line-height: 1.5; margin-bottom: 15px; }
+
+        /* პაროლის ინპუტის სტილი */
+        .pass-input {
+            padding: 12px;
+            border-radius: 15px;
+            border: 2px solid #ffb7c5;
+            margin-bottom: 15px;
+            text-align: center;
+            font-family: 'Quicksand';
+            width: 80%;
+            outline: none;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff8da1, #ffb7c5);
+            border: none;
+            padding: 14px 40px;
+            border-radius: 30px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 141, 161, 0.4);
+        }
+
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255, 141, 161, 0.6); }
+
+        .nav-controls {
+            display: none;
+            justify-content: space-between;
+            padding: 15px 30px;
+            width: 100%;
+            box-sizing: border-box;
+            background: white;
+        }
+
+        .nav-btn {
+            background: #fff0f3;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            font-size: 20px;
+            color: var(--accent-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-container { width: 100%; overflow: hidden; position: relative; margin: 15px 0; }
+        .gallery-track { display: flex; transition: transform 0.5s cubic-bezier(0.45, 0.05, 0.55, 0.95); }
+        .gallery-img { min-width: 100%; height: 220px; object-fit: cover; border-radius: 20px; }
+        .dots { margin-top: 15px; }
+        .dot { height: 8px; width: 8px; background: #ddd; border-radius: 50%; display: inline-block; margin: 0 5px; cursor: pointer; }
+        .dot.active { background: var(--accent-color); width: 20px; border-radius: 10px; transition: 0.3s; }
+
+        .scroll-box {
+            background: #fff9fa;
+            padding: 20px;
+            border-radius: 20px;
+            height: 250px;
+            overflow-y: auto;
+            border: 2px dashed #ffb7c5;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .hidden { display: none; }
+        ul { text-align: left; padding-left: 20px; }
+        li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+
+    <div class="main-card">
+        <div class="card-header"></div>
+
+        <div class="content-wrapper">
+            
+            <div class="slide active" id="password-slide">
+                <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmR2cmN0eXM4bG00M3o4c3Z6ejloM3ZsODd4aTkyZHJ6NGc2d2NydyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PbMdZc61lcD47mZRJo/giphy.gif" class="main-gif">
+                <h1>შეიყვანე პაროლი</h1>
+                <p>ჩვენი განსაკუთრებული თარიღი</p>
+                <input type="text" id="pass-input" class="pass-input" placeholder="მაგ: 19 სექტემბერი">
+                <button class="btn" onclick="checkPassword()">შესვლა</button>
+                <p id="error-msg" style="color: #ff4d4d; font-size: 0.8rem; display: none; margin-top: 10px;">არასწორია, სცადე კიდევ ერთხელ... ❤️</p>
+            </div>
+
+            <div class="slide" id="slide-1">
+                <img src="https://i.pinimg.com/474x/ea/7f/91/ea7f91c63da8e0eb708ed8a2edf165c9.jpg" class="main-gif">
+                <h1>ჩვენი პატარა ისტორია</h1>
+                <p>მზად ხარ პატარა მოგზაურობისთვის?</p>
+                <button class="btn" onclick="nextSlide()">START</button>
+            </div>
+
+            <div class="slide" id="slide-2">
+                <h1>როგორ დაიწყო...</h1>
+                <img src="https://disneytrippers.com/wp-content/uploads/2020/09/Romantic-Disney-Movies-Tangled-scaled.jpg" class="main-gif">
+                <p>ერთმანეთი დავიმატეთ და უბრალოდ ვსაუბრობდით ხოლმე</p>
+            </div>
+
+            <div class="slide" id="slide-3">
+                <h1>დღეს ჩვენ...</h1>
+                <img src="https://i.pinimg.com/474x/68/df/a2/68dfa26f88b2220f48fa5a0788c3aa3d.jpg" class="main-gif">
+                <p>ახლა ჩემი სამყარო ხარ. მივხვდი, რომ საუკეთესო ხარ, მიყვარს შენთან საუბარი და ერთმანეთთან ახლოს ვართ</p>
+            </div>
+
+            <div class="slide" id="slide-4">
+                <h1>გპირდები, რომ...</h1>
+                <img src="https://preview.redd.it/i-saw-rapunzel-today-and-i-forgot-how-beautiful-this-movie-v0-27siejy9wffc1.jpg?width=640&crop=smart&auto=webp&s=e3496817801ced39c396819ccf61cc99b24aa5d6" class="main-gif">
+                <ul>
+                    <li>ყოველთვის მოგისმენ და დაგეხმარები</li>
+                    <li>სულ ერთად ვიქნებით</li>
+                    <li>ყოველთვის შენს გვერდით მიგულე</li>
+                </ul>
+            </div>
+
+            <div class="slide" id="slide-5">
+                <h1>შენ და მე</h1>
+                <div class="gallery-container">
+                    <div class="gallery-track">
+                        <img src="https://lh3.googleusercontent.com/pw/AP1GczN2OPi0eeElPfDkUi9kWFdHLt_dV6N6fitPMfrt1vXOnoM3Y8zdorplda-tWmqeojo_Kq96M8zD5B8zLd_casE2VXQlMfQW5D93jd8ktEZ0ykk4t28" class="gallery-img">
+                        <img src="https://lh3.googleusercontent.com/pw/AP1GczPH8XPPYe9UUSmQKuR3dMMY4gSKMklHVvlY7f3yNfZQb8eQ8Z_sUkTBRRlvpRN9ADgT7w3-jOJsm17qra65mfCgAOyYNd00GjlbZ2kFrzePhyMqNyc" class="gallery-img">
+                        <img src="https://lh3.googleusercontent.com/pw/AP1GczOFloC-asQI7p8hRaETAo3-BDsJrhaIdlFl4UySD9pms8SMjuRJ0BYrW2Dr5Y-YArfTm4R4SaHZ7minVIotEKjl6CkPXgAACwJ7p_YYEOAmddnPwyQ" class="gallery-img">
+                    </div>
+                    <div class="dots">
+                        <span class="dot active" onclick="currentGallerySlide(0)"></span>
+                        <span class="dot" onclick="currentGallerySlide(1)"></span>
+                        <span class="dot" onclick="currentGallerySlide(2)"></span>
+                    </div>
+                </div>
+                <p>ჩემი საყვარელი კადრები</p>
+            </div>
+
+            <div class="slide" id="slide-6">
+                <h1>საიდუმლო წერილი</h1>
+                <div id="tap-to-open" onclick="revealMessage()" style="cursor:pointer">
+                    <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjF1cWd5M2pycGI3aXgzeG4ybHByazJoNnlpMGQwemhtaGI5cDVtYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/GJjLYgCDA1lqY0lBTO/giphy.gif" style="width:120px">
+                    <p>დააჭირე გასახსნელად ✨</p>
+                </div>
+                <div id="hidden-text" class="hidden">
+                    <div class="scroll-box">
+                        <br>საუკეთესო ადამიანი ხარ ჩემს ცხოვრებაში, ვერ წარმოიდგენ როგორ მიყვარხარ. ჩემი პრინცესა ხარრ. მინდა რო სამუდამოდ ჩემთან იყო. შენთვის ნებისმიერ რამეს გავაკეთებ, შეიძლება ეს უბრალო რაღაცაა და არც მოგეწონოს, თუმცა მთავარი ისაა, რომ გულით მინდა გაგახარო და ბედნიერი იყო.<br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slide" id="slide-7">
+                <h1>მადლობა ყველაფრისთვის!</h1>
+                <img src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXJsYm1saXFmMDY0NTdsOTlmem14cmlkdmtyenB0bDM5OXlnanY0YiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/kxUc3bdlKbe8v2CQNc/giphy.gif" class="main-gif">
+                <p>მიყვარხარ უსასრულოდ! ❤️</p>
+                <button class="btn" onclick="resetApp()">თავიდან ნახვა</button>
+            </div>
+        </div>
+
+        <div class="nav-controls" id="nav-controls">
+            <button class="nav-btn" onclick="prevSlide()">❮</button>
+            <button class="nav-btn" onclick="nextSlide()">❯</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlideIndex = 1;
+        const totalSlides = 7;
+
+        // პაროლის შემოწმება
+        function checkPassword() {
+            const pass = document.getElementById('pass-input').value.trim();
+            if (pass === '13 ივნისი') {
+                document.getElementById('password-slide').style.display = 'none';
+                showSlide(1);
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+                document.getElementById('pass-input').value = '';
+            }
+        }
+
+        // Enter ღილაკზე დაჭერის ფუნქცია
+        document.getElementById('pass-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach(s => s.classList.remove('active'));
+            document.getElementById(`slide-${index}`).classList.add('active');
+
+            const nav = document.getElementById('nav-controls');
+            if (index > 1 && index < totalSlides) {
+                nav.style.display = 'flex';
+            } else {
+                nav.style.display = 'none';
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < totalSlides) {
+                currentSlideIndex++;
+                showSlide(currentSlideIndex);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 1) {
+                currentSlideIndex--;
+                showSlide(currentSlideIndex);
+            }
+        }
+
+        function currentGallerySlide(n) {
+            const track = document.querySelector('.gallery-track');
+            const dots = document.querySelectorAll('.dot');
+            track.style.transform = `translateX(-${n * 100}%)`;
+            dots.forEach(d => d.classList.remove('active'));
+            dots[n].classList.add('active');
+        }
+
+        function revealMessage() {
+            document.getElementById('tap-to-open').classList.add('hidden');
+            document.getElementById('hidden-text').classList.remove('hidden');
+        }
+
+        function resetApp() {
+            currentSlideIndex = 1;
+            document.getElementById('password-slide').style.display = 'none';
+            showSlide(1);
+            document.getElementById('tap-to-open').classList.remove('hidden');
+            document.getElementById('hidden-text').classList.add('hidden');
+            currentGallerySlide(0);
+        }
+    </script>
+</body>
+</html>
